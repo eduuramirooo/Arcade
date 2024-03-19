@@ -4,17 +4,17 @@ window.onload = () => {
     const informacion = 
         [
             {
-                nombre: "Pique",
+                nombre: "Tekken",
                 imagen: "Tekken.jpg",
                 audio: "tekken.mp3"
             },
             {
-                nombre: "Ibai",
+                nombre: "Metal Slug",
                 imagen: "Metal.jpg",
                 audio: "metal.mp3"
             },
             {
-                nombre: "Bertrand",
+                nombre: "King Of Fighters",
                 imagen: "KOF.jpg",
                 audio: "king.mp3"
             },
@@ -67,9 +67,9 @@ window.onload = () => {
             etiquetaImg.classList.remove("a");
         }, 1000)
         
-        if(evento.key == "ArrowDown"){
+        if(evento.key == "ArrowRight"){
             cambiarDeJuego(0);
-        }else if(evento.key == "ArrowUp"){
+        }else if(evento.key == "ArrowLeft"){
             cambiarDeJuego(1);
         }
     }
