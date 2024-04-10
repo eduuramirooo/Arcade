@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Carousel</title>
+    <style>
+        body {
+            margin: 0; /* Elimina el margen predeterminado del cuerpo */
+            overflow: hidden;
+            background-image: url("../imagenes/fondo.gif");
+            background-size: cover;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100vh; /* Utiliza la altura completa de la ventana */
+            display: flex;
+            flex-direction: column; /* Alinea los elementos verticalmente */
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #game-img {
+            max-width: 80%;
+            max-height: 60vh; /* Reduzca la altura de la imagen */
+            display: block;
+            margin: auto;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 2; /* Asegurar que la imagen esté sobre el GIF */
+        }
+
+        #gif {
+            max-width: 50%; /* Ajustar el tamaño del GIF */
+            position: absolute;
+            top: 50%; /* Centrar verticalmente */
+            left: 50%; /* Centrar horizontalmente */
+            transform: translate(-50%, -50%); /* Centrar completamente */
+            z-index: 1; /* Asegurar que esté sobre la imagen principal */
+        }
+
+        #game-name {
+            text-align: center;
+            color: white;
+            font-size: 36px; /* Aumentar el tamaño del texto */
+            margin-top: 20px; /* Aumentar el espacio entre la imagen y el texto */
+            transition: opacity 0.5s ease-in-out;
+            z-index: 2; /* Asegurar que esté sobre el GIF */
+        }
+
+        .previous-img,
+        .next-img {
+            position: absolute;
+            max-width: 20%;
+            opacity: 0.5; /* Inicialmente difuminadas */
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1; /* Asegurar que estén sobre el GIF */
+        }
+
+        .previous-img:focus,
+        .next-img:focus {
+            opacity: 1; /* En foco, no difuminadas */
+        }
+
+        .previous-img {
+            left: 0;
+            bottom: 10vh; /* Posicionar un poco más arriba */
+        }
+
+        .next-img {
+            right: 0;
+            bottom: 10vh; /* Posicionar un poco más arriba */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-container">
+        <img id="game-img" src="" alt="Game">
+        <img id="gif" src="../imagenes/bbtrix.gif" alt="GIF">
+        <div id="game-name"></div>
+        <img class="previous-img" src="" alt="Previous Game" tabindex="0">
+        <img class="next-img" src="" alt="Next Game" tabindex="0">
+    </div>
+
+    <audio id="menu-audio" src="../nuevoArcade/audio/Daga_ft_Edu_140_bpm_-_Arcade_.mp3" preload="auto"></audio>
+
+    <script>
+        const games = [
+            {
+                nombre: "Tekken",
+                imagen: "Tekken.jpg",
+                
+            },
+            {
+                nombre: "Metal Slug",
+                imagen: "Metal.jpg",
+                
+            },
+            {
+                nombre: "King Of Fighters",
+                imagen: "KOF.jpg",
+                
+            },
+            {
+                nombre: "Sonic",
+                imagen: "sonic.webp",
+                
+            },
+            {
+                nombre: "Super Mario",
+                imagen: "mario.png",
+                
+            },
+            {
+                nombre: "Puzzle Bobble",
+                imagen: "Puzzle.png",
+                
+            }
+        ];
+
+        let currentIndex = 0;
+        const gameImg = document.getElementById("game-img");
+        const gameName = document.getElementById("game-name");
+        const previousImg = document.querySelector(".previous-img");
+        const nextImg = document.querySelector(".next-img");
+        const menuAudio = document.getElementById("menu-audio");
+
+        function showGame(index) {
+            currentIndex = (index + games.length) % games.length;
+            const game = games[currentIndex];
+            gameImg.style.opacity = 0; // Oculta la imagen principal
+            gameName.style.opacity = 0; // Oculta el nombre del juego
+            setTimeout(() => {
+                gameImg.src = "../imagenes/" + game.imagen;
+                gameName.textContent = game.nombre;
+                gameImg.style.opacity = 1; // Muestra la imagen principal con animación de transición
+                gameName.style.opacity = 1; // Muestra el nombre del juego con animación de transición
+                const previousIndex = (currentIndex - 1 + games.length) % games.length;
+                const nextIndex = (currentIndex + 1) % games.length;
+                previousImg.src = "../imagenes/" + games[previousIndex].imagen;
+                nextImg.src = "../imagenes/" + games[nextIndex].imagen;
+                previousImg.style.opacity = 0.5; // Difumina la imagen anterior
+                nextImg.style.opacity = 0.5; // Difumina la imagen siguiente
+            }, 500); // Espera 500 milisegundos (0.5 segundos) antes de mostrar el juego
+        }
+
+        function showNextGame() {
+            if (!menuAudio.paused) { // Si el audio ya está reproduciendo, no lo vuelvas a reproducir
+                showGame(currentIndex + 1);
+            } else {
+                playMenuSound();
+                showGame(currentIndex + 1);
+            }
+            previousImg.classList.remove("focus"); // Quita el foco de la imagen anterior
+            nextImg.classList.add("focus"); // Enfoca la imagen siguiente
+        }
+
+        function showPreviousGame() {
+            if (!menuAudio.paused) { // Si el audio ya está reproduciendo, no lo vuelvas a reproducir
+                showGame(currentIndex - 1);
+            } else {
+                playMenuSound();
+                showGame(currentIndex - 1);
+            }
+            nextImg.classList.remove("focus"); // Quita el foco de la imagen siguiente
+            previousImg.classList.add("focus"); // Enfoca la imagen anterior
+        }
+
+        function playMenuSound() {
+            menuAudio.play();
+        }
+
+        // Agregar eventos de teclado
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "ArrowLeft") {
+                showPreviousGame();
+            } else if (event.key === "ArrowRight") {
+                showNextGame();
+            }
+        });
+
+        // Mostrar el primer juego al cargar la página
+        showGame(0);
+    </script>
+</body>
+
+</html>
