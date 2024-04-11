@@ -9,24 +9,16 @@
 </head>
 
 <body>
-    <div id="start-screen">
-        <button id="start-button">Start</button>
+    <div id="game-container">
+        <img id="game-img" src="" alt="Game">
+        <img id="gif" src="../imagenes/bbtrix.gif" alt="GIF">
+        <div id="game-name"></div>
+        <img class="previous-img" src="" alt="Previous Game" tabindex="0">
+        <img class="next-img" src="" alt="Next Game" tabindex="0">
     </div>
 
-    <div id="game-container" class="hidden">
-        <div id="game-info"></div>
-        <div id="game-carousel">
-            <img id="game-img" src="" alt="Game">
-            <div id="previous-game" class="game-overlay"></div>
-            <div id="next-game" class="game-overlay"></div>
-        </div>
-        <img id="background-img" src="" alt="Background">
-        <img id="gif" src="bbtrix.gif" alt="GIF">
-    </div>
-
-    <audio id="audio" src="fl.mp3" loop></audio>
-
-    <script src="script.js"></script>
+    <audio id="menu-audio" src="./audio/Daga_ft_Edu_140_bpm_-_Arcade_.mp3" preload="auto" loop></audio>
+<script src="../nuevoArcade/js/funciones.js" defer></script>
 </body>
 
 </html>

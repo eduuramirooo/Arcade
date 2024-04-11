@@ -1,82 +1,108 @@
+// Definición de la lista de juegos con sus nombres e imágenes
 const games = [
     {
         nombre: "Tekken",
         imagen: "Tekken.jpg",
-        
     },
     {
         nombre: "Metal Slug",
         imagen: "Metal.jpg",
-        
     },
     {
         nombre: "King Of Fighters",
         imagen: "KOF.jpg",
-        
     },
     {
         nombre: "Sonic",
         imagen: "sonic.webp",
-        
     },
     {
         nombre: "Super Mario",
         imagen: "mario.png",
-        
     },
     {
         nombre: "Puzzle Bobble",
         imagen: "Puzzle.png",
-        
     }
 ];
 
-document.addEventListener("DOMContentLoaded", function() {
-    const startButton = document.getElementById("start-button");
-    const startScreen = document.getElementById("start-screen");
-    const gameContainer = document.getElementById("game-container");
-    const gameInfo = document.getElementById("game-info");
-    const gameImg = document.getElementById("game-img");
-    const backgroundImg = document.getElementById("background-img");
-    const audio = document.getElementById("audio");
-    const previousGame = document.getElementById("previous-game");
-    const nextGame = document.getElementById("next-game");
+// Variable para rastrear el índice del juego actual en el carrusel
+let currentIndex = 0;
 
-    startButton.addEventListener("click", function() {
-        startScreen.style.display = "none";
-        gameContainer.classList.remove("hidden");
-        audio.play();
+// Variable para rastrear si el audio del menú ya ha sido iniciado
+let menuAudioStarted = false;
 
-        // Cambiar el fondo
-        document.body.style.backgroundImage = "url('background.jpg')";
+// Obtención de referencias a elementos del DOM
+const gameImg = document.getElementById("game-img");
+const gameName = document.getElementById("game-name");
+const previousImg = document.querySelector(".previous-img");
+const nextImg = document.querySelector(".next-img");
+const menuAudio = document.getElementById("menu-audio");
 
-        // Mostrar la primera imagen del carrusel
-        const initialGame = games[0];
-        gameInfo.innerHTML = `<h2>${initialGame.nombre}</h2>`;
-        gameImg.src = initialGame.imagen;
+// Función para mostrar un juego en el carrusel
+function showGame(index) {
+    // Calcula el índice del juego teniendo en cuenta el tamaño del array de juegos
+    currentIndex = (index + games.length) % games.length;
 
-        // Manejar el cambio de juego al hacer clic en las flechas
-        previousGame.addEventListener("click", showPreviousGame);
-        nextGame.addEventListener("click", showNextGame);
-    });
+    // Obtiene el juego actual basado en el índice
+    const game = games[currentIndex];
 
-    let currentIndex = 0;
+    // Oculta la imagen principal y el nombre del juego con una transición
+    gameImg.style.opacity = 0;
+    gameName.style.opacity = 0;
 
-    function showPreviousGame() {
-        currentIndex = (currentIndex - 1 + games.length) % games.length;
-        const game = games[currentIndex];
-        gameInfo.innerHTML = `<h2>${game.nombre}</h2>`;
-        gameImg.src = game.imagen;
-        previousGame.style.opacity = 0.5;
-        nextGame.style.opacity = 1;
-    }
+    // Utiliza setTimeout para esperar un tiempo antes de mostrar el juego,
+    // lo que da lugar a una transición más suave
+    setTimeout(() => {
+        // Actualiza la imagen principal y el nombre del juego
+        gameImg.src = "../imagenes/" + game.imagen;
+        gameName.textContent = game.nombre;
 
-    function showNextGame() {
-        currentIndex = (currentIndex + 1) % games.length;
-        const game = games[currentIndex];
-        gameInfo.innerHTML = `<h2>${game.nombre}</h2>`;
-        gameImg.src = game.imagen;
-        previousGame.style.opacity = 1;
-        nextGame.style.opacity = 0.5;
+        // Muestra la imagen principal y el nombre del juego con una transición
+        gameImg.style.opacity = 1;
+        gameName.style.opacity = 1;
+
+        // Calcula los índices de los juegos anterior y siguiente
+        const previousIndex = (currentIndex - 1 + games.length) % games.length;
+        const nextIndex = (currentIndex + 1) % games.length;
+
+        // Actualiza las imágenes de los juegos anterior y siguiente
+        previousImg.src = "../imagenes/" + games[previousIndex].imagen;
+        nextImg.src = "../imagenes/" + games[nextIndex].imagen;
+
+        // Difumina las imágenes de los juegos anterior y siguiente
+        previousImg.style.opacity = 0.5;
+        nextImg.style.opacity = 0.5;
+    }, 500); // Espera 500 milisegundos antes de mostrar el juego
+}
+
+// Función para mostrar el siguiente juego en el carrusel
+function showNextGame() {
+    showGame(currentIndex + 1);
+    previousImg.classList.remove("focus"); // Quita el foco de la imagen anterior
+    nextImg.classList.add("focus"); // Enfoca la imagen siguiente
+}
+
+// Función para mostrar el juego anterior en el carrusel
+function showPreviousGame() {
+    showGame(currentIndex - 1);
+    nextImg.classList.remove("focus"); // Quita el foco de la imagen siguiente
+    previousImg.classList.add("focus"); // Enfoca la imagen anterior
+}
+
+// Función para reproducir el audio del menú
+function playMenuSound() {
+    menuAudio.play();
+}
+
+// Agregar eventos de teclado para cambiar entre juegos
+document.addEventListener("keydown", function(event) {
+    if (event.key === "ArrowLeft") {
+        showPreviousGame();
+    } else if (event.key === "ArrowRight") {
+        showNextGame();
     }
 });
+
+// Mostrar el primer juego al cargar la página
+showGame(0);
