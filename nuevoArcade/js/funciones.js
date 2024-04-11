@@ -31,66 +31,52 @@ const games = [
     }
 ];
 
-let currentIndex = 0;
-const gameImg = document.getElementById("game-img");
-const gameName = document.getElementById("game-name");
-const previousImg = document.querySelector(".previous-img");
-const nextImg = document.querySelector(".next-img");
-const menuAudio = document.getElementById("menu-audio");
+document.addEventListener("DOMContentLoaded", function() {
+    const startButton = document.getElementById("start-button");
+    const startScreen = document.getElementById("start-screen");
+    const gameContainer = document.getElementById("game-container");
+    const gameInfo = document.getElementById("game-info");
+    const gameImg = document.getElementById("game-img");
+    const backgroundImg = document.getElementById("background-img");
+    const audio = document.getElementById("audio");
+    const previousGame = document.getElementById("previous-game");
+    const nextGame = document.getElementById("next-game");
 
-function showGame(index) {
-    currentIndex = (index + games.length) % games.length;
-    const game = games[currentIndex];
-    gameImg.style.opacity = 0; // Oculta la imagen principal
-    gameName.style.opacity = 0; // Oculta el nombre del juego
-    setTimeout(() => {
-        gameImg.src = "../imagenes/" + game.imagen;
-        gameName.textContent = game.nombre;
-        gameImg.style.opacity = 1; // Muestra la imagen principal con animación de transición
-        gameName.style.opacity = 1; // Muestra el nombre del juego con animación de transición
-        const previousIndex = (currentIndex - 1 + games.length) % games.length;
-        const nextIndex = (currentIndex + 1) % games.length;
-        previousImg.src = "../imagenes/" + games[previousIndex].imagen;
-        nextImg.src = "../imagenes/" + games[nextIndex].imagen;
-        previousImg.style.opacity = 0.5; // Difumina la imagen anterior
-        nextImg.style.opacity = 0.5; // Difumina la imagen siguiente
-    }, 500); 
-}
+    startButton.addEventListener("click", function() {
+        startScreen.style.display = "none";
+        gameContainer.classList.remove("hidden");
+        audio.play();
 
-function showNextGame() {
-    if (!menuAudio.paused) { // Si el audio ya está reproduciendo, no lo vuelvas a reproducir
-        showGame(currentIndex + 1);
-    } else {
-        playMenuSound();
-        showGame(currentIndex + 1);
+        // Cambiar el fondo
+        document.body.style.backgroundImage = "url('background.jpg')";
+
+        // Mostrar la primera imagen del carrusel
+        const initialGame = games[0];
+        gameInfo.innerHTML = `<h2>${initialGame.nombre}</h2>`;
+        gameImg.src = initialGame.imagen;
+
+        // Manejar el cambio de juego al hacer clic en las flechas
+        previousGame.addEventListener("click", showPreviousGame);
+        nextGame.addEventListener("click", showNextGame);
+    });
+
+    let currentIndex = 0;
+
+    function showPreviousGame() {
+        currentIndex = (currentIndex - 1 + games.length) % games.length;
+        const game = games[currentIndex];
+        gameInfo.innerHTML = `<h2>${game.nombre}</h2>`;
+        gameImg.src = game.imagen;
+        previousGame.style.opacity = 0.5;
+        nextGame.style.opacity = 1;
     }
-    previousImg.classList.remove("focus"); // Quita el foco de la imagen anterior
-    nextImg.classList.add("focus"); // Enfoca la imagen siguiente
-}
 
-function showPreviousGame() {
-    if (!menuAudio.paused) { // Si el audio ya está reproduciendo, no lo vuelvas a reproducir
-        showGame(currentIndex - 1);
-    } else {
-        playMenuSound();
-        showGame(currentIndex - 1);
-    }
-    nextImg.classList.remove("focus"); // Quita el foco de la imagen siguiente
-    previousImg.classList.add("focus"); // Enfoca la imagen anterior
-}
-
-function playMenuSound() {
-    menuAudio.play();
-}
-
-// Agregar eventos de teclado
-document.addEventListener("keydown", function(event) {
-    if (event.key === "ArrowLeft") {
-        showPreviousGame();
-    } else if (event.key === "ArrowRight") {
-        showNextGame();
+    function showNextGame() {
+        currentIndex = (currentIndex + 1) % games.length;
+        const game = games[currentIndex];
+        gameInfo.innerHTML = `<h2>${game.nombre}</h2>`;
+        gameImg.src = game.imagen;
+        previousGame.style.opacity = 1;
+        nextGame.style.opacity = 0.5;
     }
 });
-
-
-showGame(0);
