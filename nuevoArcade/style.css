@@ -13,7 +13,7 @@ body {
     margin: 0; /* Elimina el margen predeterminado del cuerpo */
     overflow: hidden;
     
-    background-image: url("../imagenes/fondoPress.gif");
+    background-image: url("../imagenes/fondo.gif");
     background-size: cover;
 }
 
