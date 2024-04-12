@@ -12,7 +12,8 @@
 body {
     margin: 0; /* Elimina el margen predeterminado del cuerpo */
     overflow: hidden;
-    background-image: url("../imagenes/fondo.gif");
+    
+    background-image: url("../imagenes/fondoPress.gif");
     background-size: cover;
 }
 
@@ -26,6 +27,7 @@ body {
     position: relative;
     overflow: hidden;
     margin-top: auto; /* Centra verticalmente el contenedor */
+    
 }
 #game-img {
     max-width: 80%;
