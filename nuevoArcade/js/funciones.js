@@ -38,9 +38,12 @@ const gameName = document.getElementById("game-name");
 const previousImg = document.querySelector(".previous-img");
 const nextImg = document.querySelector(".next-img");
 const menuAudio = document.getElementById("menu-audio");
+const fl = document.getElementById("fl");
 
 // Función para mostrar un juego en el carrusel
 function showGame(index) {
+    
+    playMenuSound();
     // Calcula el índice del juego teniendo en cuenta el tamaño del array de juegos
     currentIndex = (index + games.length) % games.length;
 
@@ -92,7 +95,14 @@ function showPreviousGame() {
 
 // Función para reproducir el audio del menú
 function playMenuSound() {
-    menuAudio.play();
+    if(!menuAudioStarted){
+        fl.play();
+        menuAudioStarted= true;
+    }
+    
+    setTimeout(function() {
+        menuAudio.play();
+    }, 1600); 
 }
 
 // Agregar eventos de teclado para cambiar entre juegos
@@ -103,6 +113,29 @@ document.addEventListener("keydown", function(event) {
         showNextGame();
     }
 });
+let startArcade=false;
+document.addEventListener("keydown", function(event) {
+    if (!startArcade && event.key === "Enter") {
+        console.log("semen")
+        document.getElementById("game-container").style.backgroundImage = "url('../imagenes/fondo.gif')";
+        document.getElementById("game-container").style.display="block";
+        startArcade = true;
+        showGame(0);
+        popper=false;
+    }
+})
+let popper=true;
+do{
+    document.addEventListener("keydown", function(event) {
+        if (startArcade && event.key === "Enter" &&!popper) {
+           document.getElementById("popper").style.display="block";
+            
+        }
+    })
+}while (!popper);
 
-// Mostrar el primer juego al cargar la página
-showGame(0);
+
+
+
+
+
