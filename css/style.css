@@ -73,7 +73,7 @@ body {
 
 @keyframes moveRight {
     0% {
-        left: 30%; 
+        left: 25%; 
         transform: translateX(0);
     }
     100% {
@@ -169,14 +169,12 @@ span {
 
 .title {
     color: white;
+    font-family: 'Press Start 2P';
     font-weight: 600;
-    font-size: 20px;
+    font-size: 15px;
     display: block;
 }
 
-.subtitle {
-    color: #ddd;
-}
 
 @keyframes base-animation {
     0% {
