@@ -37,12 +37,52 @@ const gameImg = document.getElementById("game-img");
 const gameName = document.getElementById("game-name");
 const previousImg = document.querySelector(".previous-img");
 const nextImg = document.querySelector(".next-img");
-const menuAudio = document.getElementById("menu-audio");
+const menuAudio = document.getElementById("musica");
 const fl = document.getElementById("fl");
-
+let startArcade = false;
+let popper = true;
 // Función para mostrar un juego en el carrusel
+
+
+// Función para mostrar el siguiente juego en el carrusel
+function showNextGame() {
+    showGame(currentIndex + 1);
+    previousImg.classList.remove("focus"); // Quita el foco de la imagen anterior
+    nextImg.classList.add("focus"); // Enfoca la imagen siguiente
+}
+
+// Función para mostrar el juego anterior en el carrusel
+function showPreviousGame() {
+    showGame(currentIndex - 1);
+    nextImg.classList.remove("focus"); // Quita el foco de la imagen siguiente
+    previousImg.classList.add("focus"); // Enfoca la imagen anterior
+}
+
+// Función para reproducir el audio del menú
+function playMenuSound() {
+    if (!menuAudioStarted) {
+        fl.play();
+        menuAudioStarted = true;
+    }
+
+    setTimeout(function () {
+        menuAudio.play();
+    }, 1600);
+}
+
+// Agregar eventos de teclado para cambiar entre juegos
+document.addEventListener("keydown", function (event) {
+    if (event.key === "ArrowLeft") {
+        showPreviousGame();
+    } else if (event.key === "ArrowRight") {
+        showNextGame();
+    }
+});
+
+
+
 function showGame(index) {
-    
+
     playMenuSound();
     // Calcula el índice del juego teniendo en cuenta el tamaño del array de juegos
     currentIndex = (index + games.length) % games.length;
@@ -53,8 +93,7 @@ function showGame(index) {
     // Oculta la imagen principal y el nombre del juego con una transición
     gameImg.style.opacity = 0;
     gameName.style.opacity = 0;
-
-    // Utiliza setTimeout para esperar un tiempo antes de mostrar el juego,
+      // Utiliza setTimeout para esperar un tiempo antes de mostrar el juego,
     // lo que da lugar a una transición más suave
     setTimeout(() => {
         // Actualiza la imagen principal y el nombre del juego
@@ -78,64 +117,12 @@ function showGame(index) {
         nextImg.style.opacity = 0.5;
     }, 500); // Espera 500 milisegundos antes de mostrar el juego
 }
-
-// Función para mostrar el siguiente juego en el carrusel
-function showNextGame() {
-    showGame(currentIndex + 1);
-    previousImg.classList.remove("focus"); // Quita el foco de la imagen anterior
-    nextImg.classList.add("focus"); // Enfoca la imagen siguiente
-}
-
-// Función para mostrar el juego anterior en el carrusel
-function showPreviousGame() {
-    showGame(currentIndex - 1);
-    nextImg.classList.remove("focus"); // Quita el foco de la imagen siguiente
-    previousImg.classList.add("focus"); // Enfoca la imagen anterior
-}
-
-// Función para reproducir el audio del menú
-function playMenuSound() {
-    if(!menuAudioStarted){
-        fl.play();
-        menuAudioStarted= true;
-    }
-    
-    setTimeout(function() {
-        menuAudio.play();
-    }, 1600); 
-}
-
-// Agregar eventos de teclado para cambiar entre juegos
-document.addEventListener("keydown", function(event) {
-    if (event.key === "ArrowLeft") {
-        showPreviousGame();
-    } else if (event.key === "ArrowRight") {
-        showNextGame();
-    }
-});
-let startArcade=false;
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", function (event) {
     if (!startArcade && event.key === "Enter") {
-        console.log("semen")
         document.getElementById("game-container").style.backgroundImage = "url('../imagenes/fondo.gif')";
         document.getElementById("game-container").style.display="block";
-        startArcade = true;
+       
         showGame(0);
-        popper=false;
-    }
+              
+            }
 })
-let popper=true;
-do{
-    document.addEventListener("keydown", function(event) {
-        if (startArcade && event.key === "Enter" &&!popper) {
-           document.getElementById("popper").style.display="block";
-            
-        }
-    })
-}while (!popper);
-
-
-
-
-
-
