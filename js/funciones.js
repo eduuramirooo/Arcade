@@ -39,6 +39,7 @@ const previousImg = document.querySelector(".previous-img");
 const nextImg = document.querySelector(".next-img");
 const menuAudio = document.getElementById("musica");
 const fl = document.getElementById("fl");
+const title = document.querySelector(".title");
 let startArcade = false;
 let popper = true;
 // Función para mostrar un juego en el carrusel
@@ -123,6 +124,14 @@ document.addEventListener("keydown", function (event) {
         document.getElementById("game-container").style.display="block";
        
         showGame(0);
-              
+        startArcade=true;
+
+        // Agregar otro controlador de eventos para la tecla "Enter"
+        document.addEventListener("keydown", function (event) {
+            if (startArcade && event.key === "Enter") {
+                document.getElementById("popper").style.display="block";
+                title.innerText = "Espere, estamos cargando "+games[currentIndex].nombre+"...";
             }
-})
+        });
+    }
+});
