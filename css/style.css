@@ -61,6 +61,7 @@ body {
 #game-name {
     position: absolute;
     top: 10%; 
+
     animation: moveRight 4s linear infinite;
     text-align: center;
     color: white;
@@ -120,8 +121,8 @@ body {
     background-color: #ff0000;
     border-radius: 6px;
     position: absolute;
-    bottom: 20px;
-    left: 18px;
+    top: 20px;
+    right: 18px;
     filter: drop-shadow(7px 7px 10px RGBA(0, 0, 0, .4));
     padding: 8px 13px;
     cursor: pointer;
