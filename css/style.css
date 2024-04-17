@@ -60,11 +60,11 @@ body {
 
 #game-name {
     position: absolute;
-    top: 10%; /* Ajusta este valor para que coincida con la posición vertical de #game-img */
+    top: 10%; 
     animation: moveRight 4s linear infinite;
     text-align: center;
     color: white;
-    font-size: 36px;
+    font-size: 40px;
     font-family: 'Press Start 2P', cursive;
     text-shadow: 2px 2px 4px #000;
     z-index: 2;
